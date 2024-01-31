@@ -1,6 +1,3 @@
-// ** React Imports
-import { ReactNode } from 'react'
-
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles'
@@ -9,17 +6,16 @@ import { useTheme } from '@mui/material/styles'
 import { Settings } from 'src/@core/context/settingsContext'
 
 // ** Footer Content Component
-import FooterContent from './FooterContent'
+
 
 interface Props {
   settings: Settings
   saveSettings: (values: Settings) => void
-  footerContent?: (props?: any) => ReactNode
 }
 
 const Footer = (props: Props) => {
   // ** Props
-  const { settings, footerContent: userFooterContent } = props
+  const { settings } = props
 
   // ** Hook
   const theme = useTheme()
@@ -48,7 +44,6 @@ const Footer = (props: Props) => {
           ...(contentWidth === 'boxed' && { '@media (min-width:1440px)': { maxWidth: 1440 } })
         }}
       >
-        {userFooterContent ? userFooterContent(props) : <FooterContent />}
       </Box>
     </Box>
   )

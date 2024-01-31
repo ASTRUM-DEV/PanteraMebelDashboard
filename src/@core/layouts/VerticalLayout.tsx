@@ -1,5 +1,5 @@
 // ** React Imports
-import {useContext, useState} from 'react'
+import { useState } from 'react'
 
 // ** MUI Imports
 import Fab from '@mui/material/Fab'
@@ -23,7 +23,6 @@ import ScrollToTop from 'src/@core/components/scroll-to-top'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
-import {AppContext} from "../context/AppContext";
 
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
@@ -50,9 +49,8 @@ const ContentWrapper = styled('main')(({ theme }) => ({
 }))
 
 const VerticalLayout = (props: LayoutProps) => {
-  // ** Props
+
   const { settings, children, scrollToTop } = props
-  // ** Vars
   const { contentWidth } = settings
   const navWidth = themeConfig.navigationSize
 

@@ -27,11 +27,25 @@ export const createCategory = async (category: ICreateCategory) => {
   })
 
   return data
-  
 }
 
+export const editCategory = async (id: number, category: ICreateCategory) => {
+  const { data } = await $host.put('/api/v1/categories/', {
+    name: category.name,
+    name_ru: category.name_ru,
+    name_en: category.name_en,
+    name_uz: category.name_uz
+  })
 
-export const deleteCategory = async (id: string) => {
+  return data
+}
+
+export const deleteCategory = async (id: number) => {
   const {data} = await $host.delete("/api/v1/categories/" + id);
+  return data;
+}
+
+export const getCategoryById = async (id: string) => {
+  const { data } = await $host.get<ICreateCategory>(`/api/v1/categories/${id}/`);
   return data;
 }

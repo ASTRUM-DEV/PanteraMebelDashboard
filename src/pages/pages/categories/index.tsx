@@ -7,19 +7,19 @@ import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import CardHeader from '@mui/material/CardHeader'
-import {getCategories} from '../../../http/CategoryAPI'
+import {deleteCategory, getCategories} from '../../../http/CategoryAPI'
 import {ICategory} from '../../../http/types'
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
 import CardActions from "@mui/material/CardActions";
 import Checkbox from "@mui/material/Checkbox";
+import {AppContext} from "../../../@core/context/AppContext";
+import {toastError, toastSuccess} from "../../../toast/toast";
 
 export const getStaticProps = async () => {
   const categories = await getCategories()
-  console.log(categories)
-
   return {props: {categories: categories.results}}
 }
 
@@ -30,6 +30,7 @@ export interface ICategories {
 const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
   const [categories, setCategories] = useState(categoryList);
   const [selected, setSelected] = useState<number[]>([]);
+  const {saveAppState} = useContext(AppContext);
 
   const handleToggle = (id: number) => {
     const currentIndex = selected.indexOf(id);
@@ -53,13 +54,20 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
   };
 
   const handleDelete = async () => {
-    selected.forEach(async () => {
-
-    })
-    // setCategories((prevState) => prevState.filter((item) => {
-    //   selected.indexOf(item) !== -1
-    // }))
-    setSelected([]);
+    try {
+      saveAppState(prevState => ({...prevState, loading: true}));
+      for (const item of selected) {
+        await deleteCategory(item);
+      }
+      setCategories((prevState) => prevState.filter((item) => selected.indexOf(item.id) === -1));
+      setSelected([]);
+      toastSuccess("Successfully deleted");
+    } catch (e) {
+      console.log(e);
+      toastError("Error occurred when deleting category");
+    } finally {
+      saveAppState(prevState => ({...prevState, loading: false}));
+    }
   }
 
   const isAllSelected = categories.length > 0 && selected.length === categories.length;
@@ -75,7 +83,7 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
       >
         <Link href='/pages/categories/add'>
           <Button type='submit' variant='contained' size='medium'>
-            Create Category
+            Edit Category
           </Button>
         </Link>
       </Box>
@@ -101,16 +109,16 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
           <Table sx={{minWidth: 650}} aria-label='simple table'>
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell width={"20px"}>
                   <Checkbox
                     checked={isAllSelected}
                     onChange={handleSelectAllClick}
                   />
                 </TableCell>
                 <TableCell>ID</TableCell>
-                <TableCell align='right'>Name</TableCell>
-                <TableCell align='right'>Name EN</TableCell>
-                <TableCell align='right'>Name UZ</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Name EN</TableCell>
+                <TableCell>Name UZ</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -129,12 +137,14 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
                       onChange={() => handleToggle(category.id)}
                     />
                   </TableCell>
-                  <TableCell component='th' scope='row'>
-                    {category.id}
+                  <TableCell align={"left"} component='th' scope='row'>
+                    <Link href={`/pages/categories/edit/${category.id}`}>
+                      {category.id}
+                    </Link>
                   </TableCell>
-                  <TableCell align='right'>{category.name}</TableCell>
-                  <TableCell align='right'>{category.name_en}</TableCell>
-                  <TableCell align='right'>{category.name_uz}</TableCell>
+                  <TableCell>{category.name}</TableCell>
+                  <TableCell>{category.name_en}</TableCell>
+                  <TableCell>{category.name_uz}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

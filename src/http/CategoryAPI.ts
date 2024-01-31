@@ -29,7 +29,7 @@ export const createCategory = async (category: ICreateCategory) => {
   return data
 }
 
-export const editCategory = async (id: number, category: ICreateCategory) => {
+export const updateCategory = async (id: number, category: ICreateCategory) => {
   const { data } = await $host.put('/api/v1/categories/', {
     name: category.name,
     name_ru: category.name_ru,

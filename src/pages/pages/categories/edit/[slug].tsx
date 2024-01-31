@@ -44,9 +44,9 @@ const CategoryEdit: React.FC<ICategoryEdit> = ({category}) => {
           try {
             setSubmitting(true)
             await createCategory(values)
-            toastSuccess('Successfully Edited')
+            toastSuccess('Successfully Edited');
             setSubmitting(false)
-            router.push('/pages/categories/')
+            router.push('/pages/categories/');
           } catch (e) {
             setSubmitting(false)
             toastError('Error something')

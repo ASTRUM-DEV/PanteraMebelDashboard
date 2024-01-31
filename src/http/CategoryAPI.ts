@@ -1,4 +1,5 @@
 import $host from './index'
+import {FormikValues} from "formik";
 
 export const getCategories = async () => {
   try {
@@ -29,8 +30,8 @@ export const createCategory = async (category: ICreateCategory) => {
   return data
 }
 
-export const updateCategory = async (id: number, category: ICreateCategory) => {
-  const { data } = await $host.put('/api/v1/categories/', {
+export const updateCategory = async (id: string | string[] | undefined, category: FormikValues) => {
+  const { data } = await $host.put(`/api/v1/categories/${id}`, {
     name: category.name,
     name_ru: category.name_ru,
     name_en: category.name_en,

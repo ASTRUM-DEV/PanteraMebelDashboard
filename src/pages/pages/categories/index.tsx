@@ -1,29 +1,30 @@
-import Card from "@mui/material/Card";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import CardHeader from "@mui/material/CardHeader";
-import {getCategories} from "../../../http/CategoryAPI";
-import {ICategory} from "../../../http/types";
-import React, {useState} from "react";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Link from "next/link";
-import Checkbox from "@mui/material/Checkbox";
+import Card from '@mui/material/Card'
+import Paper from '@mui/material/Paper'
+import Table from '@mui/material/Table'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import TableCell from '@mui/material/TableCell'
+import TableBody from '@mui/material/TableBody'
+import TableContainer from '@mui/material/TableContainer'
+import CardHeader from '@mui/material/CardHeader'
+import {getCategories} from '../../../http/CategoryAPI'
+import {ICategory} from '../../../http/types'
+import React, {useState} from 'react'
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import Link from 'next/link'
 import CardActions from "@mui/material/CardActions";
+import Checkbox from "@mui/material/Checkbox";
 
-export const getStaticProps = (async () => {
-  const categories = await getCategories();
+export const getStaticProps = async () => {
+  const categories = await getCategories()
   console.log(categories)
-  return {props: {categories: categories.results}};
-});
 
-interface ICategories {
-  categories: ICategory[];
+  return {props: {categories: categories.results}}
+}
+
+export interface ICategories {
+  categories: ICategory[]
 }
 
 const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
@@ -55,24 +56,24 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
     selected.forEach(async () => {
 
     })
-    setCategories((prevState) => prevState.filter((item) => {
-      selected.indexOf(item) !== -1
-    }))
+    // setCategories((prevState) => prevState.filter((item) => {
+    //   selected.indexOf(item) !== -1
+    // }))
     setSelected([]);
   }
 
   const isAllSelected = categories.length > 0 && selected.length === categories.length;
 
-
   return (
     <>
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginBottom: "20px"
-      }}>
-
-        <Link href="/pages/categories/add">
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: '20px'
+        }}
+      >
+        <Link href='/pages/categories/add'>
           <Button type='submit' variant='contained' size='medium'>
             Create Category
           </Button>
@@ -141,7 +142,7 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
         </TableContainer>
       </Card>
     </>
-  );
+  )
 }
 
-export default Categories;
+export default Categories

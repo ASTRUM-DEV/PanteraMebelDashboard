@@ -30,7 +30,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 import {AppProvider} from "../@core/context/AppContext";
-import LinearProgress from "@mui/material/LinearProgress";
 import { Toaster } from 'react-hot-toast'
 
 // ** Extend App Props with Emotion

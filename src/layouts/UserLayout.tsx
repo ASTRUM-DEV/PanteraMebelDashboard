@@ -2,7 +2,6 @@
 import {ReactNode, useContext} from 'react'
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
 import {Theme} from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 

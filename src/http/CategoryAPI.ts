@@ -25,3 +25,9 @@ export const createCategory = async (category: ICreateCategory) => {
   });
   return data;
 }
+
+
+export const deleteCategory = async (id: string) => {
+  const {data} = await $host.delete("/api/v1/categories/" + id);
+  return data;
+}

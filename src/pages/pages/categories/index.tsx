@@ -9,10 +9,12 @@ import TableContainer from "@mui/material/TableContainer";
 import CardHeader from "@mui/material/CardHeader";
 import {getCategories} from "../../../http/CategoryAPI";
 import {ICategory} from "../../../http/types";
-import React from "react";
+import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Link from "next/link";
+import Checkbox from "@mui/material/Checkbox";
+import CardActions from "@mui/material/CardActions";
 
 export const getStaticProps = (async () => {
   const categories = await getCategories();
@@ -24,7 +26,43 @@ interface ICategories {
   categories: ICategory[];
 }
 
-const Categories: React.FC<ICategories> = ({categories}) => {
+const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
+  const [categories, setCategories] = useState(categoryList);
+  const [selected, setSelected] = useState<number[]>([]);
+
+  const handleToggle = (id: number) => {
+    const currentIndex = selected.indexOf(id);
+    const newSelected = [...selected];
+
+    if (currentIndex === -1) {
+      newSelected.push(id);
+    } else {
+      newSelected.splice(currentIndex, 1);
+    }
+
+    setSelected(newSelected);
+  }
+
+  const handleSelectAllClick = () => {
+    if (selected.length === categories.length) {
+      setSelected([]);
+    } else {
+      setSelected(categories.map(category => category.id));
+    }
+  };
+
+  const handleDelete = async () => {
+    selected.forEach(async () => {
+
+    })
+    setCategories((prevState) => prevState.filter((item) => {
+      selected.indexOf(item) !== -1
+    }))
+    setSelected([]);
+  }
+
+  const isAllSelected = categories.length > 0 && selected.length === categories.length;
+
 
   return (
     <>
@@ -41,11 +79,33 @@ const Categories: React.FC<ICategories> = ({categories}) => {
         </Link>
       </Box>
       <Card>
-        <CardHeader title='Categories' titleTypographyProps={{variant: 'h6'}}/>
+        <CardActions sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}>
+          <CardHeader title='Categories' titleTypographyProps={{variant: 'h6'}}/>
+          {selected.length > 0 && (
+            <Button
+              onClick={handleDelete}
+              type={"submit"}
+              variant={"contained"}
+              size={"small"}
+            >
+              Delete category
+            </Button>
+          )}
+        </CardActions>
         <TableContainer component={Paper}>
           <Table sx={{minWidth: 650}} aria-label='simple table'>
             <TableHead>
               <TableRow>
+                <TableCell>
+                  <Checkbox
+                    checked={isAllSelected}
+                    onChange={handleSelectAllClick}
+                  />
+                </TableCell>
                 <TableCell>ID</TableCell>
                 <TableCell align='right'>Name</TableCell>
                 <TableCell align='right'>Name EN</TableCell>
@@ -62,6 +122,12 @@ const Categories: React.FC<ICategories> = ({categories}) => {
                     }
                   }}
                 >
+                  <TableCell>
+                    <Checkbox
+                      checked={selected.indexOf(category.id) !== -1}
+                      onChange={() => handleToggle(category.id)}
+                    />
+                  </TableCell>
                   <TableCell component='th' scope='row'>
                     {category.id}
                   </TableCell>

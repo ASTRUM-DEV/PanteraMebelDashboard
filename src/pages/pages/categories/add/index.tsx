@@ -12,6 +12,7 @@ import {Formik} from "formik";
 import {createCategory} from "../../../../http/CategoryAPI";
 import {AppContext} from "../../../../@core/context/AppContext";
 import {useRouter} from "next/router";
+import { toastError, toastSuccess } from 'src/toast/toast';
 
 const CategoryAdd = () => {
   const { saveAppState, appState } = useContext(AppContext);
@@ -28,10 +29,12 @@ const CategoryAdd = () => {
           try {
             setSubmitting(true);
             const data = await createCategory(values);
+            toastSuccess("Succesfully Added");
             setSubmitting(false);
             router.push("/pages/categories/");
           } catch (e) {
             setSubmitting(false);
+            toastError("Error something")
           } finally {
             saveAppState(prevState => ({ ...prevState, loading: false }));
           }

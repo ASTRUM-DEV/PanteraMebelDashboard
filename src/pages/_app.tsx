@@ -31,6 +31,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 import {AppProvider} from "../@core/context/AppContext";
 import LinearProgress from "@mui/material/LinearProgress";
+import { Toaster } from 'react-hot-toast'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -73,6 +74,7 @@ const App = (props: ExtendedAppProps) => {
       </Head>
       <SettingsProvider>
         <AppProvider>
+        <Toaster reverseOrder={true}/>
           <SettingsConsumer>
             {({settings}) => {
               return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>

@@ -38,7 +38,7 @@ export const updateCategory = async (id: string | string[] | undefined, category
     name_uz: category.name_uz
   })
 
-  return data
+  return data;
 }
 
 export const deleteCategory = async (id: number) => {

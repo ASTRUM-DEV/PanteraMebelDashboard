@@ -20,6 +20,7 @@ import {toastError, toastSuccess} from "../../../toast/toast";
 
 export const getStaticProps = async () => {
   const categories = await getCategories()
+  
   return {props: {categories: categories.results}}
 }
 

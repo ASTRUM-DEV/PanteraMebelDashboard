@@ -43,10 +43,12 @@ export const updateCategory = async (id: string | string[] | undefined, category
 
 export const deleteCategory = async (id: number) => {
   const {data} = await $host.delete("/api/v1/categories/" + id);
+  
   return data;
 }
 
 export const getCategoryById = async (id: string) => {
   const { data } = await $host.get<ICreateCategory>(`/api/v1/categories/${id}/`);
+
   return data;
 }

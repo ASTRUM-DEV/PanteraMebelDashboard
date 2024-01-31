@@ -17,6 +17,7 @@ import {ICategory} from "../../../../http/types";
 
 export async function getServerSideProps({params}: { params: { slug: string } }) {
   const category = await getCategoryById(params.slug);
+  
   return {props: {category: category}};
 }
 

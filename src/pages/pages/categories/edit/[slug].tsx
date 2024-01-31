@@ -9,7 +9,7 @@ import CardActions from '@mui/material/CardActions'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import {Formik} from 'formik'
-import {createCategory, getCategoryById} from '../../../../http/CategoryAPI'
+import {createCategory, getCategoryById, updateCategory} from '../../../../http/CategoryAPI'
 import {AppContext} from '../../../../@core/context/AppContext'
 import {useRouter} from 'next/router'
 import {toastError, toastSuccess} from 'src/toast/toast'
@@ -27,7 +27,8 @@ interface ICategoryEdit {
 
 const CategoryEdit: React.FC<ICategoryEdit> = ({category}) => {
   const {saveAppState} = useContext(AppContext)
-  const router = useRouter()
+  const router = useRouter();
+  const { slug } = router.query;
 
   return (
     <Card>
@@ -44,7 +45,7 @@ const CategoryEdit: React.FC<ICategoryEdit> = ({category}) => {
           saveAppState(prevState => ({...prevState, loading: true}))
           try {
             setSubmitting(true)
-            await createCategory(values)
+            await updateCategory(slug, values)
             toastSuccess('Successfully Edited');
             setSubmitting(false)
             router.push('/pages/categories/');

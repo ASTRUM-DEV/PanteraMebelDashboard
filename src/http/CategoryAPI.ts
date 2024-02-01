@@ -31,7 +31,7 @@ export const createCategory = async (category: ICreateCategory) => {
 }
 
 export const updateCategory = async (id: string | string[] | undefined, category: FormikValues) => {
-  const { data } = await $host.put(`/api/v1/categories/${id}`, {
+  const { data } = await $host.put(`/api/v1/categories/${id}/`, {
     name: category.name,
     name_ru: category.name_ru,
     name_en: category.name_en,
@@ -42,8 +42,8 @@ export const updateCategory = async (id: string | string[] | undefined, category
 }
 
 export const deleteCategory = async (id: number) => {
-  const {data} = await $host.delete("/api/v1/categories/" + id);
-  
+  const {data} = await $host.delete(`/api/v1/categories/${id}/`);
+
   return data;
 }
 

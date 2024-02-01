@@ -1,4 +1,3 @@
-// ** Type Imports
 import { PaletteMode } from '@mui/material'
 import { ThemeColor } from 'src/@core/layouts/types'
 

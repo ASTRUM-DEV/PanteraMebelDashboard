@@ -17,10 +17,13 @@ import CardActions from "@mui/material/CardActions";
 import Checkbox from "@mui/material/Checkbox";
 import {AppContext} from "../../../@core/context/AppContext";
 import {toastError, toastSuccess} from "../../../toast/toast";
+import {useRouter} from "next/router";
+import {useTheme} from "@mui/material/styles";
+import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTable";
 
 export const getStaticProps = async () => {
   const categories = await getCategories()
-  
+
   return {props: {categories: categories.results}}
 }
 
@@ -32,6 +35,8 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
   const [categories, setCategories] = useState(categoryList);
   const [selected, setSelected] = useState<number[]>([]);
   const {saveAppState} = useContext(AppContext);
+  const theme = useTheme();
+  const router = useRouter();
 
   const handleToggle = (id: number) => {
     const currentIndex = selected.indexOf(id);
@@ -70,8 +75,20 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
       saveAppState(prevState => ({...prevState, loading: false}));
     }
   }
+  const handleClick = async (e: any, id: number) => {
+    if (e.detail === 2) {
+      await router.push(`/pages/categories/edit/${id}`);
+    }
+  }
 
   const isAllSelected = categories.length > 0 && selected.length === categories.length;
+
+  const columns: TableColumn[] = [
+    { id: "id", label: "ID" },
+    { id: "name", label: "Name" },
+    { id: "name_en", label: "Name EN" },
+    { id: "name_uz", label: "Name UZ" },
+  ];
 
   return (
     <>
@@ -84,7 +101,7 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
       >
         <Link href='/pages/categories/add'>
           <Button type='submit' variant='contained' size='medium'>
-            Edit Category
+            Create Category
           </Button>
         </Link>
       </Box>
@@ -106,54 +123,18 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
             </Button>
           )}
         </CardActions>
-        <TableContainer component={Paper}>
-          <Table sx={{minWidth: 650}} aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell width={"20px"}>
-                  <Checkbox
-                    checked={isAllSelected}
-                    onChange={handleSelectAllClick}
-                  />
-                </TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Name EN</TableCell>
-                <TableCell>Name UZ</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {categories.map(category => (
-                <TableRow
-                  key={category.id}
-                  sx={{
-                    '&:last-of-type td, &:last-of-type th': {
-                      border: 0
-                    }
-                  }}
-                >
-                  <TableCell>
-                    <Checkbox
-                      checked={selected.indexOf(category.id) !== -1}
-                      onChange={() => handleToggle(category.id)}
-                    />
-                  </TableCell>
-                  <TableCell align={"left"} component='th' scope='row'>
-                    <Link href={`/pages/categories/edit/${category.id}`}>
-                      {category.id}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell>{category.name_en}</TableCell>
-                  <TableCell>{category.name_uz}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <CustomTable
+          columns={columns}
+          data={categories}
+          selected={selected}
+          onSelectAll={handleSelectAllClick}
+          onSelectToggle={handleToggle}
+          onRowClick={handleClick}
+          isAllSelected={isAllSelected}
+        />
       </Card>
     </>
   )
 }
 
-export default Categories
+export default Categories;

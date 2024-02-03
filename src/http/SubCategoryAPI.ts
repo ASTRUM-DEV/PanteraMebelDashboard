@@ -1,5 +1,4 @@
 import $host from "./index";
-import {ISubCategory} from "./types";
 
 export interface ICreateSubCategory {
   name: string;
@@ -11,6 +10,7 @@ export interface ICreateSubCategory {
 export const getSubCategories = async () => {
   try {
     const {data} = await $host.get("/api/v1/SubCategories/");
+
     return data;
   } catch (e) {
     console.log(e);
@@ -25,7 +25,6 @@ export const createSubCategory = async (category: ICreateSubCategory) => {
     name_uz: category.name_uz,
     sub_category: category.sub_category
   })
-  console.log(data);
 
   return data;
 }

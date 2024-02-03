@@ -22,6 +22,7 @@ import {createProduct} from "../../../../http/ProductsAPI";
 
 export const getStaticProps = async () => {
   const categories = await getCategories();
+  
   return {props: {categories: categories.results}};
 }
 

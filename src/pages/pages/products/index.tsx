@@ -1,29 +1,21 @@
-import Card from '@mui/material/Card'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import TableCell from '@mui/material/TableCell'
-import TableBody from '@mui/material/TableBody'
-import TableContainer from '@mui/material/TableContainer'
+import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader'
-import {deleteCategory, getCategories} from '../../../http/CategoryAPI';
+import {deleteCategory} from '../../../http/CategoryAPI';
 import React, {useContext, useState} from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
 import CardActions from "@mui/material/CardActions";
-import Checkbox from "@mui/material/Checkbox";
 import {AppContext} from "../../../@core/context/AppContext";
 import {toastError, toastSuccess} from "../../../toast/toast";
 import {useRouter} from "next/router";
-import {useTheme} from "@mui/material/styles";
 import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTable";
 import {getProducts} from "../../../http/ProductsAPI";
 import {IProduct} from "../../../http/types";
 
 export const getStaticProps = async () => {
   const products = await getProducts();
+
   return {props: {products: products.results}}
 }
 
@@ -35,7 +27,6 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
   const [products, setProducts] = useState(productList);
   const [selected, setSelected] = useState<number[]>([]);
   const {saveAppState} = useContext(AppContext);
-  const theme = useTheme();
   const router = useRouter();
 
   const handleToggle = (id: number) => {
@@ -102,7 +93,10 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
           marginBottom: '20px'
         }}
       >
-        <Link href='/pages/products/add'>
+        <Link 
+          href='/pages/products/add'
+          passHref  
+        >
           <Button type='submit' variant='contained' size='medium'>
             Create Product
           </Button>

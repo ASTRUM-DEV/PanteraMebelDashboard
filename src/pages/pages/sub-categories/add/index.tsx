@@ -9,12 +9,12 @@ import CardActions from '@mui/material/CardActions'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import {Formik} from 'formik'
-import {createCategory, getCategories} from '../../../../http/CategoryAPI'
+import {getCategories} from '../../../../http/CategoryAPI'
 import {AppContext} from '../../../../@core/context/AppContext'
 import {useRouter} from 'next/router'
 import {toastError, toastSuccess} from '../../../../toast/toast'
-import {createSubCategory, getSubCategories} from "../../../../http/SubCategoryAPI";
-import {ICategory, ISubCategory} from "../../../../http/types";
+import {createSubCategory} from "../../../../http/SubCategoryAPI";
+import {ICategory} from "../../../../http/types";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -22,6 +22,7 @@ import InputLabel from "@mui/material/InputLabel";
 
 export const getStaticProps = async () => {
   const categories = await getCategories();
+
   return {props: {categories: categories.results}};
 }
 
@@ -32,8 +33,6 @@ export interface ISubcategories {
 const SubcategoryAdd = ({categories}: ISubcategories) => {
   const {saveAppState} = useContext(AppContext)
   const router = useRouter();
-
-  console.log(categories);
 
   return (
     <Card>

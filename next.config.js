@@ -8,6 +8,14 @@ module.exports = {
     // concurrentFeatures: true,
     jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
   },
+  images: {
+    remotePatterns: [
+        {
+            protocol: 'http',
+            hostname: '16.171.134.7',
+        },
+    ],
+  },
   webpack: config => {
     config.resolve.alias = {
       ...config.resolve.alias,

@@ -13,6 +13,7 @@ export interface ICreateProduct {
 export const getProducts = async () => {
   try {
     const {data} = await $host.get("/api/v1/products/");
+
     return data;
   } catch (e) {
     console.log(e);
@@ -31,5 +32,6 @@ export const createProduct = async (product: ICreateProduct) => {
 
   }
   const {data} = await $host.post("/api/v1/products/", formData);
+  
   return data;
 }

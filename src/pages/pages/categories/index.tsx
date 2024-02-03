@@ -89,7 +89,10 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
           marginBottom: '20px'
         }}
       >
-        <Link href='/pages/categories/add'>
+        <Link 
+          href='/pages/categories/add' 
+          passHref
+        >
           <Button type='submit' variant='contained' size='medium'>
             Create Category
           </Button>

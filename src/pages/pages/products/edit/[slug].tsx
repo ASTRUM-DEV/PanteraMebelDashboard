@@ -14,8 +14,6 @@ import {AppContext} from '../../../../@core/context/AppContext'
 import {useRouter} from 'next/router'
 import {toastError, toastSuccess} from '../../../../toast/toast'
 import {ICategory} from "../../../../http/types";
-import Link from "next/link";
-import Box from "@mui/material/Box";
 
 export async function getServerSideProps({params}: { params: { slug: string } }) {
   const category = await getCategoryById(params.slug);

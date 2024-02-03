@@ -2,11 +2,13 @@ import React from 'react';
 import {
   Table, TableHead, TableRow, TableCell, TableBody, Checkbox, TableContainer, Paper
 } from '@mui/material';
+import Box from "@mui/material/Box";
 
 export interface TableColumn {
   id: string;
   label: string;
   minWidth?: number;
+  type?: "img" | "text"
 }
 
 interface CustomTableProps {
@@ -64,7 +66,17 @@ const CustomTable: React.FC<CustomTableProps> = ({
               </TableCell>
               {columns.map((column) => (
                 <TableCell key={column.id} align='left'>
-                  {row[column.id]}
+                  {column.type === "img" ? (
+                    <Box
+                      component="img"
+                      src={row[column.id]}
+                      sx={{
+                        height: "50px",
+                      }}
+                    />
+                  ) : (
+                    row[column.id]
+                  )}
                 </TableCell>
               ))}
             </TableRow>

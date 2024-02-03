@@ -12,7 +12,7 @@ import { Formik } from 'formik'
 import { createCategory } from '../../../../http/CategoryAPI'
 import { AppContext } from '../../../../@core/context/AppContext'
 import { useRouter } from 'next/router'
-import { toastError, toastSuccess } from 'src/toast/toast'
+import { toastError, toastSuccess } from '../../../../toast/toast'
 
 const CategoryAdd = () => {
   const { saveAppState } = useContext(AppContext)

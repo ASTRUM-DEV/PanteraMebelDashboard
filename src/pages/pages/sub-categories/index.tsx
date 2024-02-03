@@ -7,7 +7,8 @@ import TableCell from '@mui/material/TableCell'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import CardHeader from '@mui/material/CardHeader'
-import {deleteCategory, getCategories} from '../../../http/CategoryAPI';
+import {deleteCategory, getCategories} from '../../../http/CategoryAPI'
+import {ICategory, ISubCategory} from '../../../http/types'
 import React, {useContext, useState} from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -19,20 +20,19 @@ import {toastError, toastSuccess} from "../../../toast/toast";
 import {useRouter} from "next/router";
 import {useTheme} from "@mui/material/styles";
 import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTable";
-import {getProducts} from "../../../http/ProductsAPI";
-import {IProduct} from "../../../http/types";
+import {getSubCategories} from "../../../http/SubCategoryAPI";
 
 export const getStaticProps = async () => {
-  const products = await getProducts();
-  return {props: {products: products.results}}
+  const subCategories = await getSubCategories();
+  return {props: {subCategories: subCategories.results}};
 }
 
-export interface IProductsComponent {
-  products: IProduct[];
+export interface ICategories {
+  subCategories: ISubCategory[];
 }
 
-const Products: React.FC<IProductsComponent> = ({products: productList}) => {
-  const [products, setProducts] = useState(productList);
+const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) => {
+  const [subCategories, setSubCategories] = useState(subCategoryList);
   const [selected, setSelected] = useState<number[]>([]);
   const {saveAppState} = useContext(AppContext);
   const theme = useTheme();
@@ -52,10 +52,10 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
   }
 
   const handleSelectAllClick = () => {
-    if (selected.length === products.length) {
+    if (selected.length === subCategories.length) {
       setSelected([]);
     } else {
-      setSelected(products.map(product => product.id));
+      setSelected(subCategories.map(category => category.id));
     }
   };
 
@@ -65,7 +65,7 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
       for (const item of selected) {
         await deleteCategory(item);
       }
-      setProducts((prevState) => prevState.filter((item) => selected.indexOf(item.id) === -1));
+      setSubCategories((prevState) => prevState.filter((item) => selected.indexOf(item.id) === -1));
       setSelected([]);
       toastSuccess("Successfully deleted");
     } catch (e) {
@@ -81,16 +81,14 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
     }
   }
 
-  const isAllSelected = products.length > 0 && selected.length === products.length;
+  const isAllSelected = subCategories.length > 0 && selected.length === subCategories.length;
 
   const columns: TableColumn[] = [
     { id: "id", label: "ID" },
     { id: "name", label: "Name" },
-    { id: "description", label: "Description" },
-    { id: "category", label: "Category" },
-    { id: "price", label: "Price" },
-    { id: "currency", label: "Currency" },
-    { id: "photo", label: "Photo", type: "img" },
+    { id: "name_en", label: "Name EN" },
+    { id: "name_uz", label: "Name UZ" },
+    { id: "sub_category", label: "Parent caregory ID" },
   ];
 
   return (
@@ -102,9 +100,9 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
           marginBottom: '20px'
         }}
       >
-        <Link href='/pages/products/add'>
+        <Link href='/pages/sub-categories/add'>
           <Button type='submit' variant='contained' size='medium'>
-            Create Product
+            Create Sub category
           </Button>
         </Link>
       </Box>
@@ -114,7 +112,7 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
           justifyContent: "space-between",
           alignItems: "center"
         }}>
-          <CardHeader title='Products' titleTypographyProps={{variant: 'h6'}}/>
+          <CardHeader title='Sub categories' titleTypographyProps={{variant: 'h6'}}/>
           {selected.length > 0 && (
             <Button
               onClick={handleDelete}
@@ -128,7 +126,7 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
         </CardActions>
         <CustomTable
           columns={columns}
-          data={products}
+          data={subCategories}
           selected={selected}
           onSelectAll={handleSelectAllClick}
           onSelectToggle={handleToggle}
@@ -140,4 +138,4 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
   )
 }
 
-export default Products;
+export default SubCategories;

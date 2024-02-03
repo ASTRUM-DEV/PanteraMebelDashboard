@@ -28,6 +28,11 @@ const navigation = (): VerticalNavItemsType => {
       path: '/pages/categories',
     },
     {
+      title: 'Sub categories',
+      icon: AccountPlusOutline,
+      path: '/pages/sub-categories',
+    },
+    {
       title: 'Products',
       icon: AlertCircleOutline,
       path: '/pages/products',

@@ -14,6 +14,10 @@ module.exports = {
             protocol: 'http',
             hostname: '16.171.134.7',
         },
+        {
+          protocol: 'https',
+          hostname: 'api.panteramebel.uz' 
+        }
     ],
   },
   webpack: config => {

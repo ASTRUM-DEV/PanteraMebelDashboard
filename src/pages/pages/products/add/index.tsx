@@ -9,25 +9,25 @@ import CardActions from '@mui/material/CardActions'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import {Formik} from 'formik'
-import {getCategories} from '../../../../http/CategoryAPI'
 import {AppContext} from '../../../../@core/context/AppContext'
 import {useRouter} from 'next/router'
 import {toastError, toastSuccess} from '../../../../toast/toast'
-import {ICategory} from "../../../../http/types";
+import {ISubCategory} from "../../../../http/types";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import {createProduct} from "../../../../http/ProductsAPI";
+import { getSubCategories } from 'src/http/SubCategoryAPI'
 
 export const getStaticProps = async () => {
-  const categories = await getCategories();
+  const categories = await getSubCategories();
   
   return {props: {categories: categories.results}};
 }
 
 export interface IProductAdd {
-  categories: ICategory[];
+  categories: ISubCategory[];
 }
 
 const ProductAdd: React.FC<IProductAdd> = ({categories}) => {

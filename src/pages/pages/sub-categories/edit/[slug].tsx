@@ -13,7 +13,7 @@ import {getCategoryById, updateCategory} from '../../../../http/CategoryAPI'
 import {AppContext} from '../../../../@core/context/AppContext'
 import {useRouter} from 'next/router'
 import {toastError, toastSuccess} from '../../../../toast/toast'
-import {ICategory} from "../../../../http/types";
+import {ISubCategory} from "../../../../http/types";
 
 export async function getServerSideProps({params}: { params: { slug: string } }) {
   const category = await getCategoryById(params.slug);
@@ -22,7 +22,7 @@ export async function getServerSideProps({params}: { params: { slug: string } })
 }
 
 interface ICategoryEdit {
-  category: ICategory;
+  category: ISubCategory;
 }
 
 const CategoryEdit: React.FC<ICategoryEdit> = ({category}) => {

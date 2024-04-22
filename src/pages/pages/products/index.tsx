@@ -10,7 +10,7 @@ import {AppContext} from "../../../@core/context/AppContext";
 import {toastError, toastSuccess} from "../../../toast/toast";
 import {useRouter} from "next/router";
 import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTable";
-import {getProducts} from "../../../http/ProductsAPI";
+import {deleteProduct, getProducts} from "../../../http/ProductsAPI";
 import {IProduct} from "../../../http/types";
 
 export const getStaticProps = async () => {
@@ -54,7 +54,7 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
     try {
       saveAppState(prevState => ({...prevState, loading: true}));
       for (const item of selected) {
-        await deleteCategory(item);
+        await deleteProduct(item);
       }
       setProducts((prevState) => prevState.filter((item) => selected.indexOf(item.id) === -1));
       setSelected([]);
@@ -68,7 +68,7 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
   }
   const handleClick = async (e: any, id: number) => {
     if (e.detail === 2) {
-      await router.push(`/pages/categories/edit/${id}`);
+      await router.push(`/pages/products/edit/${id}`);
     }
   }
 

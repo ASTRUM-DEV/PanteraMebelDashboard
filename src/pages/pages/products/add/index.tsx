@@ -34,10 +34,9 @@ const ProductAdd: React.FC<IProductAdd> = ({categories}) => {
   const {saveAppState} = useContext(AppContext);
   const router = useRouter();
 
-
   return (
     <Card>
-      <CardHeader title='Create Subcategory' titleTypographyProps={{variant: 'h6'}}/>
+      <CardHeader title='Create Product' titleTypographyProps={{variant: 'h6'}}/>
       <Divider sx={{margin: 0}}/>
       <Formik
         initialValues={{

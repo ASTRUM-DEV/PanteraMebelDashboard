@@ -20,6 +20,15 @@ export const getProducts = async () => {
   }
 }
 
+export const deleteProduct = async (productId: number) => {
+  try {
+    const {data} = await $host.delete(`/api/v1/products/${productId}/`);
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export const createProduct = async (product: ICreateProduct) => {
   const formData = new FormData();
   formData.append("name", product.name);

@@ -33,7 +33,7 @@ const CategoryEdit: React.FC<ICategoryEdit> = ({category}) => {
   return (
     <>
       <Card>
-        <CardHeader title='Edit category' titleTypographyProps={{variant: 'h6'}}/>
+        <CardHeader title='Edit Product' titleTypographyProps={{variant: 'h6'}}/>
         <Divider sx={{margin: 0}}/>
         <Formik
           initialValues={{

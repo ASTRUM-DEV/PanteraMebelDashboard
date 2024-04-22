@@ -23,6 +23,7 @@ export const getProducts = async () => {
 export const deleteProduct = async (productId: number) => {
   try {
     const {data} = await $host.delete(`/api/v1/products/${productId}/`);
+
     return data;
   } catch (e) {
     console.log(e);
@@ -41,6 +42,6 @@ export const createProduct = async (product: ICreateProduct) => {
 
   }
   const {data} = await $host.post("/api/v1/products/", formData);
-  
+
   return data;
 }

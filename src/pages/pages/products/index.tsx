@@ -1,6 +1,5 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader'
-import {deleteCategory} from '../../../http/CategoryAPI';
 import React, {useContext, useState} from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'

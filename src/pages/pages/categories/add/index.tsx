@@ -29,9 +29,9 @@ const CategoryAdd = () => {
           try {
             setSubmitting(true)
             await createCategory(values)
-            toastSuccess('Succesfully Added')
+            toastSuccess('Successfully Added')
             setSubmitting(false)
-            router.push('/pages/categories/')
+            await router.push('/pages/categories/')
           } catch (e) {
             setSubmitting(false)
             toastError('Error something')

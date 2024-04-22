@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader'
 import {deleteCategory} from '../../../http/CategoryAPI'
 import {ISubCategory} from '../../../http/types'
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
@@ -11,23 +11,18 @@ import {AppContext} from "../../../@core/context/AppContext";
 import {toastError, toastSuccess} from "../../../toast/toast";
 import {useRouter} from "next/router";
 import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTable";
-import {getSubCategories} from "../../../http/SubCategoryAPI";
-
-export const getStaticProps = async () => {
-  const subCategories = await getSubCategories();
-
-  return {props: {subCategories: subCategories.results, revalidate: 1}};
-}
+import {deleteSubCategory, getSubCategories} from "../../../http/SubCategoryAPI";
 
 export interface ICategories {
   subCategories: ISubCategory[];
 }
 
 const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) => {
-  const [subCategories, setSubCategories] = useState(subCategoryList);
+  const [subCategories, setSubCategories] = useState<ISubCategory[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const {saveAppState} = useContext(AppContext);
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
 
   const handleToggle = (id: number) => {
     const currentIndex = selected.indexOf(id);
@@ -54,7 +49,7 @@ const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) 
     try {
       saveAppState(prevState => ({...prevState, loading: true}));
       for (const item of selected) {
-        await deleteCategory(item);
+        await deleteSubCategory(item);
       }
       setSubCategories((prevState) => prevState.filter((item) => selected.indexOf(item.id) === -1));
       setSelected([]);
@@ -68,7 +63,7 @@ const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) 
   }
   const handleClick = async (e: any, id: number) => {
     if (e.detail === 2) {
-      await router.push(`/pages/categories/edit/${id}`);
+      await router.push(`/pages/sub-categories/edit/${id}`);
     }
   }
 
@@ -81,6 +76,25 @@ const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) 
     { id: "name_uz", label: "Name UZ" },
     { id: "sub_category", label: "Parent caregory ID" },
   ];
+
+  const fetchCategories = async () => {
+    try {
+      const subCategories = await getSubCategories();
+      setSubCategories(subCategories.results);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  if(loading) {
+    return null;
+  }
 
   return (
     <>

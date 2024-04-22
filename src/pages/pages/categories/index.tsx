@@ -2,7 +2,7 @@ import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import {deleteCategory, getCategories} from '../../../http/CategoryAPI'
 import {ICategory} from '../../../http/types'
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
@@ -12,20 +12,15 @@ import {toastError, toastSuccess} from "../../../toast/toast";
 import {useRouter} from "next/router";
 import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTable";
 
-export const getStaticProps = async () => {
-  const categories = await getCategories()
-
-  return {props: {categories: categories.results}, revalidate: 1 }
-}
-
 export interface ICategories {
   categories: ICategory[]
 }
 
-const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
-  const [categories, setCategories] = useState(categoryList);
+const Categories: React.FC<ICategories> = () => {
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const {saveAppState} = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const handleToggle = (id: number) => {
@@ -79,6 +74,22 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
     { id: "name_en", label: "Name EN" },
     { id: "name_uz", label: "Name UZ" },
   ];
+
+  const fetchCategories = async () => {
+    try {
+      const categories = await getCategories()
+
+      setCategories(categories.results);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CardHeader from '@mui/material/CardHeader'
 import Divider from '@mui/material/Divider'
 import CardContent from '@mui/material/CardContent'
@@ -22,7 +22,7 @@ import { getSubCategories } from 'src/http/SubCategoryAPI'
 
 export const getStaticProps = async () => {
   const categories = await getSubCategories();
-  
+
   return {props: {categories: categories.results}};
 }
 
@@ -30,9 +30,31 @@ export interface IProductAdd {
   categories: ISubCategory[];
 }
 
-const ProductAdd: React.FC<IProductAdd> = ({categories}) => {
+const ProductAdd: React.FC<IProductAdd> = () => {
   const {saveAppState} = useContext(AppContext);
+  const [categories, setCategories] = useState<ISubCategory[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const fetchProducts = async () => {
+    try {
+      const categoriesData = await getSubCategories();
+
+      setCategories(categoriesData.results);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  if(loading) {
+    return null;
+  }
 
   return (
     <Card>

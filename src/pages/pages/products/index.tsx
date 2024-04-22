@@ -1,6 +1,6 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader'
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Link from 'next/link'
@@ -10,21 +10,17 @@ import {toastError, toastSuccess} from "../../../toast/toast";
 import {useRouter} from "next/router";
 import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTable";
 import {deleteProduct, getProducts} from "../../../http/ProductsAPI";
+import parse from "html-react-parser";
 import {IProduct} from "../../../http/types";
-
-export const getStaticProps = async () => {
-  const products = await getProducts();
-
-  return { props: {products: products.results}, revalidate: 1 }
-}
 
 export interface IProductsComponent {
   products: IProduct[];
 }
 
 const Products: React.FC<IProductsComponent> = ({products: productList}) => {
-  const [products, setProducts] = useState(productList);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
+  const [loading, setLoading] = useState(true);
   const {saveAppState} = useContext(AppContext);
   const router = useRouter();
 
@@ -82,6 +78,26 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
     { id: "currency", label: "Currency" },
     { id: "photo", label: "Photo", type: "img" },
   ];
+
+  const fetchProducts = async () => {
+    try {
+      const products: { results: IProduct[] } = await getProducts();
+
+      setProducts(products.results.map((item) => ({ ...item, description: parse(item.description) })));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  if(loading) {
+    return null;
+  }
 
   return (
     <>

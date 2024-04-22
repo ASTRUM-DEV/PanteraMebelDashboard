@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import CardHeader from '@mui/material/CardHeader'
 import Divider from '@mui/material/Divider'
 import CardContent from '@mui/material/CardContent'
@@ -20,19 +20,31 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 
-export const getStaticProps = async () => {
-  const categories = await getCategories();
-
-  return {props: {categories: categories.results}};
-}
-
-export interface ISubcategories {
-  categories: ICategory[];
-}
-
-const SubcategoryAdd = ({categories}: ISubcategories) => {
+const SubcategoryAdd = () => {
   const {saveAppState} = useContext(AppContext)
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const fetchCategories = async () => {
+    try {
+      const categories = await getCategories();
+
+      setCategories(categories.results);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  if(loading) {
+    return null;
+  }
 
   return (
     <Card>

@@ -14,9 +14,10 @@ import {AppContext} from '../../../../@core/context/AppContext'
 import {useRouter} from 'next/router'
 import {toastError, toastSuccess} from '../../../../toast/toast'
 import {ISubCategory} from "../../../../http/types";
+import {getSubCategoryById, updateSubCategory} from "../../../../http/SubCategoryAPI";
 
 export async function getServerSideProps({params}: { params: { slug: string } }) {
-  const category = await getCategoryById(params.slug);
+  const category = await getSubCategoryById(params.slug);
 
   return {props: {category: category}};
 }
@@ -46,10 +47,10 @@ const CategoryEdit: React.FC<ICategoryEdit> = ({category}) => {
             saveAppState(prevState => ({...prevState, loading: true}))
             try {
               setSubmitting(true)
-              await updateCategory(slug, values)
+              await updateSubCategory(slug, values)
               toastSuccess('Successfully Edited');
               setSubmitting(false)
-              await router.push('/pages/categories/');
+              await router.push('/pages/sub-categories/');
             } catch (e) {
               setSubmitting(false)
               toastError('Error something')

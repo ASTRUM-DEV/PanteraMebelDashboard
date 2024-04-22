@@ -53,6 +53,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
             <TableRow
               key={row.id}
               hover
+              style={{ cursor: "pointer" }}
               onClick={(e) => onRowClick(e, row.id)}
               sx={{
                 '&:last-of-type td, &:last-of-type th': {border: 0},

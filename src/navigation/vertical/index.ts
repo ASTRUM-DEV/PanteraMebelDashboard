@@ -15,7 +15,7 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types'
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      title: 'Dashboard',
+      title: 'Products',
       icon: HomeOutline,
       path: '/',
     },

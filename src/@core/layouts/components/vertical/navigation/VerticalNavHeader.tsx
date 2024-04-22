@@ -59,11 +59,7 @@ const VerticalNavHeader = (props: Props) => {
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-            <img
-              style={{ width: "50px" }}
-              src='https://panteramebel.uz/img/logo.png'
-              alt='logo'
-            />
+           
             <HeaderTitle variant='h6' sx={{ ml: 3 }}>
               {themeConfig.templateName}
             </HeaderTitle>

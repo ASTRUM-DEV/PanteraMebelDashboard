@@ -16,7 +16,7 @@ import {IProduct} from "../../../http/types";
 export const getStaticProps = async () => {
   const products = await getProducts();
 
-  return {props: {products: products.results}}
+  return { props: {products: products.results}, revalidate: 0 }
 }
 
 export interface IProductsComponent {
@@ -93,9 +93,9 @@ const Products: React.FC<IProductsComponent> = ({products: productList}) => {
           marginBottom: '20px'
         }}
       >
-        <Link 
+        <Link
           href='/pages/products/add'
-          passHref  
+          passHref
         >
           <Button type='submit' variant='contained' size='medium'>
             Create Product

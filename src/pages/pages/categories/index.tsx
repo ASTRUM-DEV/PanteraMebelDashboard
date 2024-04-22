@@ -15,7 +15,7 @@ import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTa
 export const getStaticProps = async () => {
   const categories = await getCategories()
 
-  return {props: {categories: categories.results}}
+  return {props: {categories: categories.results}, revalidate: 0 }
 }
 
 export interface ICategories {
@@ -89,8 +89,8 @@ const Categories: React.FC<ICategories> = ({categories: categoryList}) => {
           marginBottom: '20px'
         }}
       >
-        <Link 
-          href='/pages/categories/add' 
+        <Link
+          href='/pages/categories/add'
           passHref
         >
           <Button type='submit' variant='contained' size='medium'>

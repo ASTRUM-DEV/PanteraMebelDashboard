@@ -16,7 +16,7 @@ import {getSubCategories} from "../../../http/SubCategoryAPI";
 export const getStaticProps = async () => {
   const subCategories = await getSubCategories();
 
-  return {props: {subCategories: subCategories.results}};
+  return {props: {subCategories: subCategories.results, revalidate: 0}};
 }
 
 export interface ICategories {
@@ -91,9 +91,9 @@ const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) 
           marginBottom: '20px'
         }}
       >
-        <Link 
+        <Link
           href='/pages/sub-categories/add'
-          passHref  
+          passHref
         >
           <Button type='submit' variant='contained' size='medium'>
             Create Sub category

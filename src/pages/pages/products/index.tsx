@@ -17,7 +17,7 @@ export interface IProductsComponent {
   products: IProduct[];
 }
 
-const Products: React.FC<IProductsComponent> = ({products: productList}) => {
+const Products: React.FC<IProductsComponent> = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);

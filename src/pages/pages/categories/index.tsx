@@ -91,6 +91,10 @@ const Categories: React.FC<ICategories> = () => {
     fetchCategories();
   }, []);
 
+  if(loading) {
+    return null;
+  }
+
   return (
     <>
       <Box

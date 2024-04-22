@@ -1,6 +1,5 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader'
-import {deleteCategory} from '../../../http/CategoryAPI'
 import {ISubCategory} from '../../../http/types'
 import React, {useContext, useEffect, useState} from 'react'
 import Button from '@mui/material/Button'
@@ -17,7 +16,7 @@ export interface ICategories {
   subCategories: ISubCategory[];
 }
 
-const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) => {
+const SubCategories: React.FC<ICategories> = () => {
   const [subCategories, setSubCategories] = useState<ISubCategory[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const {saveAppState} = useContext(AppContext);
@@ -144,6 +143,6 @@ const SubCategories: React.FC<ICategories> = ({subCategories: subCategoryList}) 
       </Card>
     </>
   )
-}
+};
 
 export default SubCategories;

@@ -16,7 +16,7 @@ import {getSubCategories} from "../../../http/SubCategoryAPI";
 export const getStaticProps = async () => {
   const subCategories = await getSubCategories();
 
-  return {props: {subCategories: subCategories.results, revalidate: 0}};
+  return {props: {subCategories: subCategories.results, revalidate: 1}};
 }
 
 export interface ICategories {

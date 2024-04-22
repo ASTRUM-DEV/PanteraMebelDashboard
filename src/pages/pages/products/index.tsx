@@ -15,7 +15,7 @@ import {IProduct} from "../../../http/types";
 export const getStaticProps = async () => {
   const products = await getProducts();
 
-  return { props: {products: products.results}, revalidate: 0 }
+  return { props: {products: products.results}, revalidate: 1 }
 }
 
 export interface IProductsComponent {

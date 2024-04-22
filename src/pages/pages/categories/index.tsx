@@ -15,7 +15,7 @@ import CustomTable, {TableColumn} from "../../../components/CustomTable/CustomTa
 export const getStaticProps = async () => {
   const categories = await getCategories()
 
-  return {props: {categories: categories.results}, revalidate: 0 }
+  return {props: {categories: categories.results}, revalidate: 1 }
 }
 
 export interface ICategories {
